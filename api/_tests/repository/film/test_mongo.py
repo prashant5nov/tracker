@@ -3,19 +3,15 @@ import secrets
 import pytest
 
 # noinspection PyUnresolvedReferences
+from api._tests.fixtures import mongo_film_repo_fixture
 from api.repository.film.mongo import MongoFilmRepository
 from api.entities.film import Film
 from api.repository.film.abstractions import RepositoryException
 
 
 @pytest.mark.asyncio
-async def test_create():
-
-    repo = MongoFilmRepository(
-        connection_string="mongodb://localhost:27017",
-        database="my-database"
-    )
-    await repo.create(
+async def test_create(mongo_film_repo_fixture):
+    await mongo_film_repo_fixture.create(
         film=Film(
             film_id="first",
             title="My Film",
@@ -24,7 +20,7 @@ async def test_create():
             watched=True,
         )
     )
-    film: Film = await repo.get_by_id("first")
+    film: Film = await mongo_film_repo_fixture.get_by_id("first")
     assert film == Film(
         film_id="first",
         title="My Film",
@@ -32,7 +28,7 @@ async def test_create():
         release_year=2022,
         watched=True,
     )
-    await repo.delete("first")
+    await mongo_film_repo_fixture.delete("first")
 
 #
 # @pytest.mark.parametrize(
