@@ -20,6 +20,9 @@ async def test_create(mongo_film_repo_fixture):
             watched=True,
         )
     )
+
+    breakpoint()
+
     film: Film = await mongo_film_repo_fixture.get_by_id("first")
     assert film == Film(
         film_id="first",
@@ -72,7 +75,7 @@ async def test_create(mongo_film_repo_fixture):
 #         await repo.create(film)
 #     film: Film = await repo.get_by_id(film_id)
 #     assert film == expected_result
-#
+
 #
 # @pytest.mark.parametrize(
 #     "initial_films,searched_title,expected_films",
